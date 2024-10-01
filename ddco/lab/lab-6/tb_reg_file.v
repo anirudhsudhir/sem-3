@@ -33,6 +33,7 @@ module tb;
   end
   initial
   begin
-    $monitor($time, "- d_in=%d, d_out_a=%d, d_out_b=%d, rd_addr_a=%d,rd_addr_b=%d,wr_addr=%d",d_in,d_out_a,d_out_b,rd_addr_a,rd_addr_b,wr_addr);
+    // $monitor($time, "- d_in=%d, d_out_a=%d, d_out_b=%d, rd_addr_a=%d,rd_addr_b=%d,wr_addr=%d",d_in,d_out_a,d_out_b,rd_addr_a,rd_addr_b,wr_addr);
+    $monitor($time, "- d_in=%x, d_out_a=%x, d_out_b=%x, rd_addr_a=%x,rd_addr_b=%x,wr_addr=%x",d_in,d_out_a,d_out_b,rd_addr_a,rd_addr_b,wr_addr);
   end
 endmodule

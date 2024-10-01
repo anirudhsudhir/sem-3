@@ -19,4 +19,6 @@ begin
 $monitor($time, " - i1 = %b, i2 = %b, o= %b", i1, i2, o);
 end
 
+ initial begin $dumpfile("tb.vcd"); $dumpvars(0,nand_tb); end
+
 endmodule;

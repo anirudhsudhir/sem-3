@@ -35,4 +35,8 @@ module tb;
       begin #10 {op, i0, i1}=test_vecs[i]; end
     #100 $finish;
   end
+  initial
+  begin
+    $monitor($time, " - op = %x, i0 = %x, i1 = %x, o = %x, count = %x",op, i0, i1, o)
+  end
 endmodule
