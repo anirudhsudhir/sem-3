@@ -1,70 +1,61 @@
-import ply.lex as lex
+from ply import lex
 
-reserved = {"if": "IF", "let": "LET"}
-
-tokens = [
-    "DIGIT",
-    "LETTER",
+reserved = {"if": "IF", "defun": "DEFUN", "setq": "SETQ", "t": "T", "nil": "NIL"}
+tokens = (
     "LPAREN",
     "RPAREN",
+    "IDENTIFIER",
+    "NUMBER",
+    "STRING",
+    "EQUALS",
     "PLUS",
     "MINUS",
     "MULTIPLY",
     "DIVIDE",
-    "DOT",
-    "COLON",
-    "DQUOTE",
-] + list(reserved.values())
+    "GREATER",
+    "LESS",
+    "GREATEREQUAL",
+    "LESSEQUAL",
+) + tuple(reserved.values())
 
-t_DIGIT = r"\d"
-t_LETTER = r"[a-zA-Z]"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
+t_EQUALS = r"="
 t_PLUS = r"\+"
-t_MINUS = r"\-"
+t_MINUS = r"-"
 t_MULTIPLY = r"\*"
-t_DIVIDE = r"\/"
-t_DOT = r"\."
-t_COLON = r"\:"
-t_DQUOTE = r"\""
+t_DIVIDE = r"/"
+t_GREATER = r">"
+t_LESS = r"<"
+t_GREATEREQUAL = r">="
+t_LESSEQUAL = r"<="
+
+t_ignore = " \t\n"
 
 
-# tokens = [
-#     "NUMBER",
-#     "LETTER",
-#     "LPAREN",
-#     "RPAREN",
-#     "DOT",
-# ]
-#
-# # todo!
-# t_LETTER = r"[a-zA-Z]"
-# t_LPAREN = r"\("
-# t_RPAREN = r"\)"
-# t_DOT = r"\."
-
-
-# def t_NUMBER(t):
-#     r"\d+"
-#     t.value = int(t.value)
-#     return t
-
-
-# matching reserved tokens
-def t_ID(t):
-    # todo!
-    r"[a-zA-Z_][a-zA-Z_0-9]*"
-    t.type = reserved.get(t.value, "ID")
+def t_IDENTIFIER(t):
+    r"[a-zA-Z][a-zA-Z0-9\-]*"  # identifiers start with a letter and can contain digits and hyphens
+    t.type = reserved.get(t.value.lower(), "IDENTIFIER")
     return t
 
 
-# A string containing ignored characters (spaces and tabs)
-t_ignore = " \t"
+def t_NUMBER(t):
+    r"\d*\.?\d+"  # accepting integer as well as floating point numbers
+    if "." in t.value:
+        t.value = float(t.value)
+    else:
+        t.value = int(t.value)
+    return t
 
 
-# Error handling rule
+def t_STRING(t):
+    r"\"[^\"]*\" "  # accepting quoted strings, and matching any character which is not a double quote
+    t.value = t.value[1 : len(t.value) - 1]  # removing the double quotes
+    return t
+
+
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Illegal character: ", t.value[0])
     t.lexer.skip(1)
 
 

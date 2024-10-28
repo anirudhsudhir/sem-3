@@ -1,266 +1,145 @@
-# Parse functions, if, variables
-#
-#
-# <s-expression> ::= <atom> | <list>
-#
-# <list> ::= "(" <s-expressions> ")" | "(" ")"
-#
-# <s-expressions> ::= <s-expression> | <s-expression> <s-expressions>
-#
-# <atom> ::= <symbol> | <number> | <string> | <character>
-#
-# <symbol> ::= <identifier> | <keyword>
-#
-# <identifier> ::= <initial> <subsequent>* | <special-initial> <subsequent>*
-#
-# <initial> ::= <letter> | <special-initial>
-#
-# <special-initial> ::= "!" | "$" | "%" | "&" | "*" | "+" | "-" | "/" | ":" | "<" | "=" | ">" | "?" | "@" | "^" | "_" | "~"
-#
-# <subsequent> ::= <initial> | <digit> | "."
-#
-# <keyword> ::= ":" <identifier>
-#
-# <number> ::= <integer> | <float> | <ratio>
-#
-# <integer> ::= ["+"|"-"] <digit>+
-#
-# <float> ::= ["+"|"-"] <digit>+ "." <digit>+ ["e" ["+"|"-"] <digit>+]
-#
-# <ratio> ::= ["+"|"-"] <digit>+ "/" <digit>+
-#
-# <string> ::= '"' <string-character>* '"'
-#
-# <string-character> ::= <any-character-except-quote> | '\"'
-#
-# <character> ::= "#\" <any-character> | "#\" <character-name>
-#
-# <character-name> ::= "Space" | "Newline" | "Tab" | "Page" | "Rubout" | "Linefeed" | "Return" | "Backspace"
-#
-# <if> ::= "(if" <s-expression> <s-expression> [<s-expression>] ")"
-#
-# <lambda> ::= "(lambda" "(" <lambda-list> ")" <s-expressions> ")"
-#
-# <let> ::= "(let" "(" <binding>* ")" <s-expressions> ")"
-#
-# <binding> ::= "(" <symbol> <s-expression> ")"
-#
-# ; Function Application
-# <function-call> ::= "(" <function-name> <s-expression>* ")"
-#
-# <function-name> ::= <symbol>
-
-#
-# def p_s_expression_atomic(p):
-#     "s_expression : atomic_symbol"
-#     p[0] = p[1]
-#
-#
-# def p_s_expression_expression(p):
-#     "s_expression : LPAREN s_expression DOT s_expression RPAREN"
-#     # todo!
-#
-#
-# def p_s_expression_list(p):
-#     "s_expression : list"
-#     p[0] = p[1]
-#
-#
-# def p_list(p):
-#     # Doubtful about second s_expression
-#     "list : LPAREN s_expression s_expression RPAREN"
-#     # todo!
-#
-#
-# def p_atomic_symbol(p):
-#     "atomic_symbol : letter atom_part"
-#
-#
-# def p_atom_part_empty(p):
-#     "atom_part : empty"
-#     p[0] = p[1]
-#
-#
-# def p_atom_part_letter_atom(p):
-#     "atom_part : letter atom_part"
-#     # todo!
-#
-#
-# def p_atom_part_num_atom(p):
-#     "atom_part : number atom_part"
-#     # todo!
-#
-#
-# def p_letter(p):
-#     "letter : LETTER"
-#     p[0] = p[1]
-#
-#
-# def p_number(p):
-#     "number : NUMBER"
-#     p[0] = p[1]
-#
-#
-# def p_empty(p):
-#     "empty :"
-#     pass
-#
-
-import ply.yacc as yacc
+from ply import yacc
 
 from lisp_lex import tokens
 
 
-def p_s_expression_basic(p):
-    """s_expression : atom
-    | list
-    | s_expression"""
+def p_program(p):
+    """program : form
+    | program form"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+
+def p_form(p):
+    """form : function_definition
+    | variable_definition
+    | function_call
+    | if_condition
+    | literal
+    | operation"""
     p[0] = p[1]
 
 
-def p_s_expression_expressions(p):
-    "s_expression : s_expression s_expression"
-    # todo!
+def p_operation(p):
+    """operation : LPAREN operator arguments RPAREN"""
+    p[0] = {"type": "operation", "operator": p[2], "arguments": p[3]}
 
 
-def p_list_expression(p):
-    "list : LPAREN s_expression RPAREN"
-    p[0] = p[1]
-
-
-def p_list_empty(p):
-    "list : LPAREN empty RPAREN"
-    p[0] = []
-
-
-def p_atom(p):
-    """atom : symbol
-    | number
-    | string
-    | char
-    """
-    p[0] = p[1]
-
-
-def p_symbol(p):
-    """symbol : identifier
-    | keyword
-    """
-    p[0] = p[1]
-
-
-def p_identifier(p):
-    """identifier : initial subsequent
-    | special_initial subsequent
-    """
-    # todo!
-
-
-def p_initial(p):
-    """initial : LETTER
-    | special_initial
-    """
-    p[0] = p[1]
-
-
-def p_special_initial(p):
-    """special_initial : PLUS
+def p_operator(p):
+    """operator : EQUALS
+    | PLUS
     | MINUS
     | MULTIPLY
     | DIVIDE
-    """
+    | GREATER
+    | LESS
+    | GREATEREQUAL
+    | LESSEQUAL"""
     p[0] = p[1]
 
 
-def p_subsequent(p):
-    """subsequent : subsequent
-    | initial
-    | DIGIT
-    | DOT
-    """
-    p[0] = p[1]
+def p_function_definition(p):
+    "function_definition : LPAREN DEFUN IDENTIFIER parameter_list body RPAREN"
+    p[0] = {
+        "type": "function_definition",
+        "name": p[3],
+        "parameters": p[4],
+        "body": p[5],
+    }
 
 
-def p_keyword(p):
-    "keyword : COLON identifier"
-    p[0] = p[1] + p[2]
+def p_parameter_list(p):
+    "parameter_list : LPAREN parameters RPAREN"
+    p[0] = p[2]
 
 
-def p_number(p):
-    """number : integer"""
-    p[0] = p[1]
+def p_parameters(p):
+    """parameters :
+    | IDENTIFIER parameters"""
+    if len(p) == 1:
+        p[0] = []
+    else:
+        p[0] = [p[1]] + p[2]
 
 
-def p_integer(p):
-    "integer : digit"
-    p[0] = int(p[1] + p[2])
+def p_body(p):
+    """body : form
+    | form body"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
 
 
-def p_digit(p):
-    """digit : digit
-    | DIGIT"""
-    p[0] = p[1]
-
-
-def p_string(p):
-    "string : DQUOTE chars DQUOTE"
-    p[0] = p[1]
-
-
-def p_chars(p):
-    """chars : chars
-    | LETTER
-    """
-    p[0] = p[1]
-
-
-def p_char(p):
-    """char : LETTER
-    | DQUOTE
-    """
-    p[0] = p[1]
-
-
-def p_if(p):
-    "if : LPAREN IF s_expression s_expression s_expression RPAREN"
-    # todo!
-
-
-def p_let(p):
-    "let : LPAREN LET LPAREN bindings RPAREN s_expression RPAREN"
-    # todo!
-
-
-def p_bindings(p):
-    """bindings : bindings
-    | binding
-    """
-    p[0] = p[1]
-
-
-def p_binding(p):
-    "binding : LPAREN symbol s_expression RPAREN"
-    # todo!
+def p_variable_definition(p):
+    "variable_definition : LPAREN SETQ IDENTIFIER form RPAREN"
+    p[0] = {"type": "variable_definition", "name": p[3], "value": p[4]}
 
 
 def p_function_call(p):
-    "function_call : LPAREN function_name s_expression RPAREN"
-    # todo!
+    "function_call : LPAREN IDENTIFIER arguments RPAREN"
+    p[0] = {"type": "function_call", "name": p[2], "arguments": p[3]}
 
 
-def p_function_name(p):
-    "function_name : symbol"
+def p_arguments(p):
+    """arguments :
+    | form arguments"""
+    if len(p) == 1:
+        p[0] = []
+    else:
+        p[0] = [p[1]] + p[2]
+
+
+def p_if_condition(p):
+    """if_condition : LPAREN IF test_form then_form RPAREN
+    | LPAREN IF test_form then_form else_form RPAREN"""
+    if len(p) == 6:
+        p[0] = {"type": "if_condition", "test": p[3], "then": p[4], "else": None}
+    else:
+        p[0] = {"type": "if_condition", "test": p[3], "then": p[4], "else": p[5]}
+
+
+def p_test_form(p):
+    "test_form : form"
     p[0] = p[1]
 
 
-def p_empty(p):
-    "empty :"
-    pass
+def p_then_form(p):
+    "then_form : form"
+    p[0] = p[1]
 
 
-# Error rule for syntax errors
+def p_else_form(p):
+    "else_form : form"
+    p[0] = p[1]
+
+
+def p_literal(p):
+    """literal : NUMBER
+    | STRING
+    | T
+    | NIL
+    | IDENTIFIER"""
+    if isinstance(p[1], (int, float)):
+        p[0] = {"type": "number", "value": p[1]}
+    elif p[1] == "t":
+        p[0] = {"type": "boolean", "value": True}
+    elif p[1] == "nil":
+        p[0] = {"type": "boolean", "value": False}
+    elif isinstance(p[1], str):
+        if p.slice[1].type == "STRING":
+            p[0] = {"type": "string", "value": p[1]}
+        else:
+            p[0] = {"type": "identifier", "value": p[1]}
+
+
 def p_error(p):
-    print("Syntax error in input!")
+    if p:
+        print("Syntax error at: ", p.value)
+    else:
+        print("Syntax error at EOF")
 
 
 parser = yacc.yacc()
