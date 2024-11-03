@@ -8,6 +8,11 @@ typedef struct Node {
   struct Node *right;
 } Node;
 
+typedef struct {
+  int key;
+  int val;
+} InorderSuccessorRet;
+
 Node *insert(Node *root, int key, int val);
 char search(Node *root, int key);
 Node *delete(Node *root, int key);
@@ -15,6 +20,7 @@ void inorderTraversal(Node *root);
 void preorderTraversal(Node *root);
 
 Node *newNode(int key, int val);
+InorderSuccessorRet inorderSuccessor(Node *root);
 
 int main() {
   Node *root = insert(NULL, 10, 'a');
@@ -24,6 +30,12 @@ int main() {
   root = insert(root, 2, 'e');
   preorderTraversal(root);
   printf("\nsearch key %d = val %c\n", 4, search(root, 4));
+
+  printf("\ndeleting key 6\n");
+  root = delete (root, 6);
+  printf("\ndeleting key 4\n");
+  root = delete (root, 4);
+  preorderTraversal(root);
   return 0;
 }
 
@@ -79,9 +91,43 @@ Node *delete(Node *root, int key) {
   }
 
   if (root->key > key) {
-    delete (root->left, key);
+    root->left = delete (root->left, key);
   } else if (root->key < key) {
-    delete (root->right, key);
+    root->right = delete (root->right, key);
   } else {
+
+    // only right child exists or no children
+    if (root->left == NULL) {
+      Node *temp = root->right;
+      free(root);
+      return temp;
+    }
+    // only left child exists
+    else if (root->right == NULL) {
+      Node *temp = root->left;
+      free(root);
+      return temp;
+    }
+    // both children exists
+    else {
+      InorderSuccessorRet inorderSuccessorRet = inorderSuccessor(root->right);
+      root->key = inorderSuccessorRet.key;
+      root->val = inorderSuccessorRet.val;
+      root->right = delete (root->right, inorderSuccessorRet.key);
+      return root;
+    }
   }
+
+  return root;
+}
+
+InorderSuccessorRet inorderSuccessor(Node *root) {
+  while (root->left != NULL) {
+    root = root->left;
+  }
+  InorderSuccessorRet inorderSuccessorRet = {
+      .key = root->key,
+      .val = root->val,
+  };
+  return inorderSuccessorRet;
 }
