@@ -5,20 +5,20 @@ function App() {
   const patientsList = [
     {
       id: 1,
-      name: "A",
+      name: "Luke",
       reason: "Routine checkup",
       date: "01-11-2024",
     },
     {
       id: 2,
-      name: "B",
-      reason: "Routine checkup",
+      name: "Han",
+      reason: "Fever",
       date: "05-11-2024",
     },
     {
       id: 3,
-      name: "C",
-      reason: "Routine checkup",
+      name: "Vader",
+      reason: "Surgery",
       date: "10-12-2024",
     },
   ];
