@@ -22,6 +22,7 @@ end
 
 initial
 begin
+//$monitor($time," - i0 = %d, i1 = %d, g=%d, h=%d product = 0-%d 1-%d 2-%d 3-%d 4-%d 5-%d 6-%d 7-%d 8-%d 9-%d 10-%d 11-%d 12-%d 13-%d 14-%d 15-%d", i0, i1, g,h, pdt[0], pdt[1], pdt[2], pdt[3], pdt[4], pdt[5], pdt[6], pdt[7], pdt[8], pdt[10], pdt[10], pdt[11], pdt[12], pdt[13], pdt[14], pdt[15]);
 $monitor($time," - i0 = %d, i1 = %d, product = %d", i0, i1, pdt);
 $dumpfile("proj_tb.vcd");
 $dumpvars(0, proj_tb);

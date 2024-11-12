@@ -1,13 +1,14 @@
+module carry_save_mult(input [7:0] m , input [7:0] q, output [15:0] P);
 
-module carry_save_mult(input [7:0]m,input [7:0]q,output [15:0] P);
-    wire [6:0] A;
-	wire [7:0] B;
-	wire [7:0] C;
-	wire [7:0] D;
-	wire [7:0] E;
-	wire [7:0] F;
-	wire [7:0] G;
-	wire [7:0] H;
+  wire [6:0] A; //q0 series product
+	wire [7:0] B; //q1 series product
+	wire [7:0] C; //q2 series product
+	wire [7:0] D; //q3 series product
+	wire [7:0] E; //q4 series product
+	wire [7:0] F; //q5 series product
+	wire [7:0] G; //q6 series product
+	wire [7:0] H; //q7 series product
+
 	wire c_outf1;
 	wire c_outf2;
 	wire c_outf3;
@@ -24,44 +25,44 @@ module carry_save_mult(input [7:0]m,input [7:0]q,output [15:0] P);
 	wire c_outf14;
 	wire c_outf15;
 	wire c_outf16;
-    wire c_outf17;
-    wire c_outf18;
-    wire c_outf19;
-    wire c_outf20;
-    wire c_outf21;
-    wire c_outf22;
-    wire c_outf23;
-    wire c_outf24;
-    wire c_outf25;
-    wire c_outf26;
-    wire c_outf27;
-    wire c_outf28;
-    wire c_outf29;
-    wire c_outf30;
-    wire c_outf31;
-    wire c_outf32;
+  wire c_outf17;
+  wire c_outf18;
+  wire c_outf19;
+  wire c_outf20;
+  wire c_outf21;
+  wire c_outf22;
+  wire c_outf23;
+  wire c_outf24;
+  wire c_outf25;
+  wire c_outf26;
+  wire c_outf27;
+  wire c_outf28;
+  wire c_outf29;
+  wire c_outf30;
+  wire c_outf31;
+  wire c_outf32;
 	wire c_outf33;
-    wire c_outf34;
+  wire c_outf34;
 	wire c_outf35;
-    wire c_outf36;
-    wire c_outf37;
-    wire c_outf38;
-    wire c_outf39;
-    wire c_outf40;
-    wire c_outf42;
-    wire c_outf43;
-    wire c_outf44;
-    wire c_outf45;
-    wire c_outf46;
-    wire c_outf47;
-    wire c_outf48;
-    wire c_outf49;
-    wire c_outf50;
-    wire c_outf51;
-    wire c_outf52;
-    wire c_outf53;
-    wire c_outf54;
-    wire c_outf55;
+  wire c_outf36;
+  wire c_outf37;
+  wire c_outf38;
+  wire c_outf39;
+  wire c_outf40;
+  wire c_outf42;
+  wire c_outf43;
+  wire c_outf44;
+  wire c_outf45;
+  wire c_outf46;
+  wire c_outf47;
+  wire c_outf48;
+  wire c_outf49;
+  wire c_outf50;
+  wire c_outf51;
+  wire c_outf52;
+  wire c_outf53;
+  wire c_outf54;
+  wire c_outf55;
 	wire sum_f2;
 	wire sum_f3;
 	wire sum_f4;
@@ -91,20 +92,20 @@ module carry_save_mult(input [7:0]m,input [7:0]q,output [15:0] P);
 	wire sum_f30;
 	wire sum_f31;
 	wire sum_f32;
-    wire sum_f34;
-    wire sum_f35;
-    wire sum_f36;
-    wire sum_f37;
-    wire sum_f38;
-    wire sum_f39;
-    wire sum_f40;
-    wire sum_f42;
-    wire sum_f43;
-    wire sum_f44;
-    wire sum_f45;
-    wire sum_f46;
-    wire sum_f47;
-    wire sum_f48;
+  wire sum_f34;
+  wire sum_f35;
+  wire sum_f36;
+  wire sum_f37;
+  wire sum_f38;
+  wire sum_f39;
+  wire sum_f40;
+  wire sum_f42;
+  wire sum_f43;
+  wire sum_f44;
+  wire sum_f45;
+  wire sum_f46;
+  wire sum_f47;
+  wire sum_f48;
 
 	wire zero1 = 1'b0;
 	wire zero2 = 1'b0;
@@ -114,7 +115,6 @@ module carry_save_mult(input [7:0]m,input [7:0]q,output [15:0] P);
 	wire zero6 = 1'b0;
 	wire zero7 = 1'b0;
 	wire zero8 = 1'b0;
-	 
 
 and2 x1(P[0], m[0], q[0]);
 and2 x2(A[0], m[1], q[0]);
@@ -188,8 +188,6 @@ and2 x62(H[5], m[5], q[7]);
 and2 x63(H[6], m[6], q[7]);
 and2 x64(H[7], m[7], q[7]);
 
-
-
 fadder f1(c_outf1, P[1],A[0],B[0],zero1);
 fadder f2(c_outf2,sum_f2,A[1],B[1],C[0]);
 fadder f3(c_outf3,sum_f3,A[2],B[2],C[1]);
@@ -215,7 +213,7 @@ fadder f20(c_outf20, sum_f20, sum_f13, E[2], c_outf12);
 fadder f21(c_outf21, sum_f21, sum_f14, E[3], c_outf13);
 fadder f22(c_outf22, sum_f22, sum_f15, E[4], c_outf14);
 fadder f23(c_outf23, sum_f23, sum_f16, E[5], c_outf15);
-fadder f24(c_outf24,sum_f24,D[7],E[6],c_outf16);
+fadder f24(c_outf24, sum_f24,D[7],E[6],c_outf16);
 
 fadder f25(c_outf25, P[4], sum_f18, zero5, c_outf17);
 fadder f26(c_outf26, sum_f26, sum_f19, F[0], c_outf18);
@@ -242,15 +240,15 @@ fadder f44(c_outf44, sum_f44, sum_f37, H[2], c_outf36);
 fadder f45(c_outf45, sum_f45, sum_f38, H[3], c_outf37);
 fadder f46(c_outf46, sum_f46, sum_f39, H[4], c_outf38);
 fadder f47(c_outf47, sum_f47, sum_f40, H[5], c_outf39);
-fadder f48(c_outf48, sum_f48,G[7],H[6],c_outf40);
+fadder f48(c_outf48, sum_f48, G[7], H[6], c_outf40);
 
-fadder f49(c_outf49,P[7],sum_f42,c_out41,zero8);
-fadder f50(c_outf50, P[8], sum_f43, c_out42, c_out49);
-fadder f51(c_outf51, P[9], sum_f44, c_out43, c_out50);
-fadder f52(c_outf52, P[10], sum_f45, c_out44, c_out51);
-fadder f53(c_outf53, P[11], sum_f46, c_out45, c_out52);
-fadder f54(c_outf54, P[12], sum_f47, c_out46, c_out53);
-fadder f55(c_outf55, P[13], sum_f48, c_out47, c_out54);
-fadder f56(P[15],P[14],H[7],c_out48,c_out55);
+fadder f49(c_outf49, P[7] , sum_f42, c_outf41, zero8);
+fadder f50(c_outf50, P[8] , sum_f43, c_outf42, c_outf49);
+fadder f51(c_outf51, P[9] , sum_f44, c_outf43, c_outf50);
+fadder f52(c_outf52, P[10] , sum_f45, c_outf44, c_outf51);
+fadder f53(c_outf53, P[11] , sum_f46, c_outf45, c_outf52);
+fadder f54(c_outf54, P[12] , sum_f47, c_outf46, c_outf53);
+fadder f55(c_outf55, P[13] , sum_f48, c_outf47, c_outf54);
+fadder f56(P[15], P[14], H[7] ,c_outf48, c_outf55);
 
 endmodule
