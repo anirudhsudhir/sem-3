@@ -21,4 +21,10 @@ initial
 begin
 $monitor($time, " - i1=%d,i2=%d,sum=%d,carry=%d",i1,i2,sum,carry);
 end
+
+initial
+begin
+$dumpfile("rca_tb.vcd");
+$dumpvars(0, rca_tb);
+end
 endmodule;

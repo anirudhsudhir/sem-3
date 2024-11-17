@@ -55,6 +55,6 @@ end
   end
 
   initial begin 
-    $monitor($time, " - d_in = %x, d_out_a=%x, d_out_b =%x, cout=%x", d_in, d_out_a, d_out_b, cout);
+    $monitor($time, " - d_out_a=%d, d_out_b =%d, cout=%d, rd_addr_a=%d, rd_addr_b=%d, wr_addr=%d, d_in=%d, sel=%d, op=%d", d_out_a, d_out_b, cout, rd_addr_a, rd_addr_b, wr_addr, d_in, sel, op);
   end
 endmodule

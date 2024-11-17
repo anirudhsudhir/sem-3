@@ -31,6 +31,6 @@ module tb;
   end
   initial
   begin
-    $monitor($time," - offset=%x,pc=%x,inc=%x,add=%x,sub=%x",offset,pc,inc,add,sub);
+    $monitor($time," - offset=%d,pc=%d,inc=%d,add=%d,sub=%d",offset,pc,inc,add,sub);
   end
 endmodule

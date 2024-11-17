@@ -37,6 +37,6 @@ module tb;
   end
   initial
   begin
-    $monitor($time, " - op = %x, i0 = %x, i1 = %x, o = %x, count = %x",op, i0, i1, o)
+    $monitor($time, " - op = %d, i0 = %d, i1 = %d, out = %d, cout = %d",op, i0, i1, o, cout);
   end
 endmodule

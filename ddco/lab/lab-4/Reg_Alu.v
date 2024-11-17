@@ -72,23 +72,6 @@ wire cout_val;
 
 // Instantiate modules here
 
-// mux2 alu_mux0(out_mux_wire[0],d_in[0], sel ,reg_in_wire[0]);
-// mux2 alu_mux1(out_mux_wire[1],d_in[1], sel ,reg_in_wire[1]);
-// mux2 alu_mux2(out_mux_wire[2],d_in[2], sel ,reg_in_wire[2]);
-// mux2 alu_mux3(out_mux_wire[3],d_in[3], sel ,reg_in_wire[3]);
-// mux2 alu_mux4(out_mux_wire[4],d_in[4], sel ,reg_in_wire[4]);
-// mux2 alu_mux5(out_mux_wire[5],d_in[5], sel ,reg_in_wire[5]);
-// mux2 alu_mux6(out_mux_wire[6],d_in[6], sel ,reg_in_wire[6]);
-// mux2 alu_mux7(out_mux_wire[7],d_in[7], sel ,reg_in_wire[7]);
-// mux2 alu_mux8(out_mux_wire[8],d_in[8], sel ,reg_in_wire[8]);
-// mux2 alu_mux9(out_mux_wire[9],d_in[9], sel ,reg_in_wire[9]);
-// mux2 alu_mux10(out_mux_wire[10],d_in[10], sel ,reg_in_wire[10]);
-// mux2 alu_mux11(out_mux_wire[11],d_in[11], sel ,reg_in_wire[11]);
-// mux2 alu_mux12(out_mux_wire[12],d_in[12], sel ,reg_in_wire[12]);
-// mux2 alu_mux13(out_mux_wire[13],d_in[13], sel ,reg_in_wire[13]);
-// mux2 alu_mux14(out_mux_wire[14],d_in[14], sel ,reg_in_wire[14]);
-// mux2 alu_mux15(out_mux_wire[15],d_in[15], sel ,reg_in_wire[15]);
-
 mux2 alu_mux0(d_in[0],out_mux_wire[0],sel,reg_in_wire[0]);
 mux2 alu_mux1(d_in[1],out_mux_wire[1],sel,reg_in_wire[1]);
 mux2 alu_mux2(d_in[2],out_mux_wire[2],sel,reg_in_wire[2]);
