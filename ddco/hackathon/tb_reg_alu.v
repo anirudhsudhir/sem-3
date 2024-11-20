@@ -4,45 +4,45 @@
 module tb;
   reg clk, reset, wr, sel;
   reg [1:0] op;
-  reg [2:0] rd_addr_a, rd_addr_b, wr_addr; reg [15:0] d_in;
-  wire [15:0] d_out_a, d_out_b;
-  reg [28:0] test_vecs [0:(`TESTVECS-1)];
+  reg [2:0] rd_addr_a, rd_addr_b, wr_addr; reg [7:0] d_in;
+  wire [7:0] d_out_a, d_out_b;
+  reg [20:0] test_vecs [0:(`TESTVECS-1)];
   integer i;
   initial begin $dumpfile("tb_reg_alu.vcd"); $dumpvars(0,tb); end
   initial begin reset = 1'b1; #12.5 reset = 1'b0; end
   initial clk = 1'b0; always #5 clk =~ clk;
   initial begin
-    test_vecs[0][28] = 1'b0; test_vecs[0][27] = 1'b1; test_vecs[0][26:25] = 2'b00;
-    test_vecs[0][24:22] = 3'ox; test_vecs[0][21:19] = 3'ox;
-    test_vecs[0][18:16] = 3'h3; test_vecs[0][15:0] = 16'hcdef;
+    test_vecs[0][20] = 1'b0; test_vecs[0][19] = 1'b1; test_vecs[0][18:17] = 2'b00;
+    test_vecs[0][16:14] = 3'ox; test_vecs[0][13:11] = 3'ox;
+    test_vecs[0][10:8] = 3'h3; test_vecs[0][7:0] = 8'o6;
 
-    test_vecs[1][28] = 1'b0; test_vecs[1][27] = 1'b1; test_vecs[1][26:25] = 2'b01;
-    test_vecs[1][24:22] = 3'o3; test_vecs[1][21:19] = 3'o7;
-    test_vecs[1][18:16] = 3'o7; test_vecs[1][15:0] = 16'h3210;
+    test_vecs[1][20] = 1'b0; test_vecs[1][19] = 1'b1; test_vecs[1][18:17] = 2'b01;
+    test_vecs[1][16:14] = 3'o3; test_vecs[1][13:11] = 3'o7;
+    test_vecs[1][10:8] = 3'o7; test_vecs[1][7:0] = 8'o4;
 
-    test_vecs[2][28] = 1'b0; test_vecs[2][27] = 1'b1; test_vecs[2][26:25] = 2'b10;
-    test_vecs[2][24:22] = 3'o3; test_vecs[2][21:19] = 3'o7;
-    test_vecs[2][18:16] = 3'o5; test_vecs[2][15:0] = 16'h4567;
+    test_vecs[2][20] = 1'b0; test_vecs[2][19] = 1'b1; test_vecs[2][18:17] = 2'b10;
+    test_vecs[2][16:14] = 3'o3; test_vecs[2][13:11] = 3'o7;
+    test_vecs[2][10:8] = 3'o5; test_vecs[2][7:0] = 8'o2;
 
-    test_vecs[3][28] = 1'b0; test_vecs[3][27] = 1'b1; test_vecs[3][26:25] = 2'b11;
-    test_vecs[3][24:22] = 3'o1; test_vecs[3][21:19] = 3'o5;
-    test_vecs[3][18:16] = 3'o1; test_vecs[3][15:0] = 16'hba98;
+    test_vecs[3][20] = 1'b0; test_vecs[3][19] = 1'b1; test_vecs[3][18:17] = 2'b11;
+    test_vecs[3][16:14] = 3'o1; test_vecs[3][13:11] = 3'o5;
+    test_vecs[3][10:8] = 3'o1; test_vecs[3][7:0] = 8'o5;
 
-    test_vecs[4][28] = 1'b1; test_vecs[4][27] = 1'b1; test_vecs[4][26:25] = 2'b00;
-    test_vecs[4][24:22] = 3'o1; test_vecs[4][21:19] = 3'o5;
-    test_vecs[4][18:16] = 3'h3; test_vecs[4][15:0] = 16'hcdef;
+    test_vecs[4][20] = 1'b1; test_vecs[4][19] = 1'b1; test_vecs[4][18:17] = 2'b00;
+    test_vecs[4][16:14] = 3'o1; test_vecs[4][13:11] = 3'o5;
+    test_vecs[4][10:8] = 3'h3; test_vecs[4][7:0] = 8'o6;
 
-    test_vecs[5][28] = 1'b1; test_vecs[5][27] = 1'b1; test_vecs[5][26:25] = 2'b01;
-    test_vecs[5][24:22] = 3'o5; test_vecs[5][21:19] = 3'o7;
-    test_vecs[5][18:16] = 3'o7; test_vecs[5][15:0] = 16'h3210;
+    test_vecs[5][20] = 1'b1; test_vecs[5][19] = 1'b1; test_vecs[5][18:17] = 2'b01;
+    test_vecs[5][16:14] = 3'o5; test_vecs[5][13:11] = 3'o7;
+    test_vecs[5][10:8] = 3'o7; test_vecs[5][7:0] = 8'o4;
 
-    test_vecs[6][28] = 1'b1; test_vecs[6][27] = 1'b1; test_vecs[6][26:25] = 2'b10;
-    test_vecs[6][24:22] = 3'o3; test_vecs[6][21:19] = 3'o7;
-    test_vecs[6][18:16] = 3'o5; test_vecs[6][15:0] = 16'h4567;
+    test_vecs[6][20] = 1'b1; test_vecs[6][19] = 1'b1; test_vecs[6][18:17] = 2'b10;
+    test_vecs[6][16:14] = 3'o3; test_vecs[6][13:11] = 3'o7;
+    test_vecs[6][10:8] = 3'o5; test_vecs[6][7:0] = 8'o2;
 
-    test_vecs[7][28] = 1'b1; test_vecs[7][27] = 1'b1; test_vecs[7][26:25] = 2'b11;
-    test_vecs[7][24:22] = 3'o1; test_vecs[7][21:19] = 3'o5;
-    test_vecs[7][18:16] = 3'o1; test_vecs[7][15:0] = 16'hba98;
+    test_vecs[7][20] = 1'b1; test_vecs[7][19] = 1'b1; test_vecs[7][18:17] = 2'b11;
+    test_vecs[7][16:14] = 3'o1; test_vecs[7][13:11] = 3'o5;
+    test_vecs[7][10:8] = 3'o1; test_vecs[7][7:0] = 8'o5;
 
   end
   initial begin {sel, wr, op, rd_addr_a, rd_addr_b, wr_addr, d_in} = 0;
@@ -56,7 +56,8 @@ end
   end
 
   initial begin 
-    $monitor($time, " - d_out_a=%b, d_out_b =%b, rd_addr_a=%b, rd_addr_b=%b, wr_addr=%b, d_in=%b, sel=%b, op=%b",
-      d_out_a, d_out_b, rd_addr_a, rd_addr_b, wr_addr, d_in, sel, op);
+    $monitor($time, " - sel = %b, op = %b, d_out_a=%b, d_out_b =%b, rd_addr_a=%b, rd_addr_b=%b, wr_addr=%b, d_in=%b\n",
+      sel, op, d_out_a, d_out_b, rd_addr_a, rd_addr_b, wr_addr, d_in);
   end
+
 endmodule
